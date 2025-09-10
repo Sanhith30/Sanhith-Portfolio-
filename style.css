@@ -33,6 +33,7 @@ body {
   background: var(--bg-white);
   color: var(--text-color);
   overflow-x: hidden;
+  overflow-y: auto; /* Explicitly enable vertical scrolling */
   padding-top: 80px;
   transition: background var(--transition-fast);
 }
@@ -134,7 +135,7 @@ body.dark-mode {
   padding: 80px 10%;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed to visible to prevent clipping and allow full scrolling */
 }
 
 .hero-left {
@@ -242,7 +243,7 @@ body.dark-mode {
   position: absolute;
   top: 0;
   right: -20%;
-  width: 140%;
+  width: 100%; /* Reduced width to prevent horizontal overflow triggers */
   height: 100%;
   background: var(--bg-light);
   transform: skewX(-15deg);
