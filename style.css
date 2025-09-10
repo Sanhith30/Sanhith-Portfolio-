@@ -6,13 +6,15 @@
 }
 
 :root {
-  --primary-color: #a5a488; /* Main accent color */
-  --text-color: #111; /* Primary text color */
-  --bg-light: #f9f9f9; /* Light background */
-  --bg-white: #fff; /* White background */
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  --primary-color: #4A90E2; /* Muted blue for trust and modernity */
+  --secondary-color: #2E2E2E; /* Charcoal for depth */
+  --accent-color: #E94E77; /* Soft pink for vibrant highlights */
+  --text-color: #212121; /* Dark text for readability */
+  --bg-light: #FAFAFA; /* Light background for clean feel */
+  --bg-white: #FFFFFF; /* Pure white */
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow for subtlety */
   --transition-fast: 0.3s ease; /* Fast transition */
-  --transition-slow: 0.5s ease; /* Slow transition for animations */
+  --transition-slow: 0.5s ease; /* Slow for animations */
 }
 
 html {
@@ -35,6 +37,16 @@ body {
   transition: background var(--transition-fast);
 }
 
+/* Dark Mode Support (Toggle via class on body) */
+body.dark-mode {
+  --primary-color: #1A73E8;
+  --secondary-color: #121212;
+  --accent-color: #D81B60;
+  --text-color: #E0E0E0;
+  --bg-light: #1E1E1E;
+  --bg-white: #121212;
+}
+
 /* Navbar Styles */
 .navbar {
   width: 100%;
@@ -48,11 +60,11 @@ body {
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  transition: padding var(--transition-fast), box-shadow var(--transition-fast);
+  transition: padding var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .navbar.scrolled {
-  padding: 10px 40px; /* Shrink on scroll for better visibility */
+  padding: 10px 40px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -60,7 +72,8 @@ body {
   font-size: 24px;
   font-weight: 700;
   opacity: 0;
-  animation: fadeIn 1s forwards; /* Fade-in animation for logo */
+  animation: fadeIn 1s forwards;
+  will-change: opacity, transform; /* Performance opt */
 }
 
 @keyframes fadeIn {
@@ -98,7 +111,7 @@ body {
 }
 
 .nav-links li a:hover::after {
-  width: 100%; /* Underline animation on hover */
+  width: 100%;
 }
 
 .menu-icon {
@@ -109,7 +122,7 @@ body {
 }
 
 .menu-icon:hover {
-  transform: rotate(90deg); /* Rotate icon on hover for interactivity */
+  transform: rotate(90deg);
 }
 
 /* Hero Section Styles */
@@ -128,7 +141,8 @@ body {
   flex: 1 1 500px;
   z-index: 1;
   opacity: 0;
-  animation: slideInLeft 1s 0.5s forwards; /* Slide-in animation */
+  animation: slideInLeft 1s 0.5s forwards;
+  will-change: opacity, transform;
 }
 
 @keyframes slideInLeft {
@@ -156,7 +170,7 @@ body {
 }
 
 .hero-left h1:hover span {
-  color: #7e826d; /* Subtle color shift on hover */
+  color: var(--accent-color);
 }
 
 .buttons {
@@ -171,12 +185,21 @@ body {
   font-weight: 600;
   text-decoration: none;
   display: inline-block;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  animation: pulse 2s infinite ease-in-out alternate; /* Subtle pulse */
+  will-change: transform;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
 }
 
 .btn:hover {
-  transform: scale(1.05); /* Scale on hover for interactivity */
+  transform: scale(1.05);
   box-shadow: var(--shadow-soft);
+  background: var(--accent-color);
+  color: var(--bg-white);
 }
 
 .btn.primary {
@@ -208,10 +231,11 @@ body {
   border: 4px solid var(--bg-white);
   box-shadow: var(--shadow-soft);
   transition: transform var(--transition-slow);
+  will-change: transform;
 }
 
 .hero-right:hover img {
-  transform: rotate(5deg) scale(1.05); /* Subtle rotate and scale on hover */
+  transform: rotate(5deg) scale(1.05);
 }
 
 .bg-skew {
@@ -220,10 +244,11 @@ body {
   right: -20%;
   width: 140%;
   height: 100%;
-  background: #f0f0f0;
+  background: var(--bg-light);
   transform: skewX(-15deg);
   z-index: -1;
-  animation: skewAnimate 2s infinite alternate; /* Gentle skew animation */
+  animation: skewAnimate 2s infinite alternate ease-in-out;
+  will-change: transform;
 }
 
 @keyframes skewAnimate {
@@ -235,6 +260,14 @@ body {
 .about-section {
   padding: 60px 20px;
   background: var(--bg-light);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow); /* Scroll trigger simulation */
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .container {
@@ -259,10 +292,11 @@ body {
   opacity: 0;
   animation: fadeIn 1s 0.2s forwards;
   transition: transform var(--transition-fast);
+  will-change: transform;
 }
 
 .about-img:hover img {
-  transform: translateY(-5px); /* Lift on hover */
+  transform: translateY(-5px) rotate(2deg); /* Added tilt */
 }
 
 .about-content {
@@ -274,6 +308,7 @@ body {
 .about-content h2 {
   font-size: clamp(1.8rem, 5vw, 2.5rem);
   margin-bottom: 15px;
+  color: var(--secondary-color);
 }
 
 .about-content p {
@@ -284,7 +319,7 @@ body {
 }
 
 .about-content p:hover {
-  color: var(--primary-color); /* Color shift for interactivity */
+  color: var(--primary-color);
 }
 
 .about-details p {
@@ -303,13 +338,13 @@ body {
   border-radius: 20px;
   font-size: 14px;
   color: #333;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
 }
 
 .interests span:hover {
-  background: var(--primary-color);
-  color: #fff;
-  transform: scale(1.1); /* Pop on hover */
+  background: var(--accent-color);
+  color: var(--bg-white);
+  transform: scale(1.1);
 }
 
 /* Skills Section Styles */
@@ -318,6 +353,14 @@ body {
   padding: 60px 20px;
   text-align: center;
   scroll-margin-top: 80px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.skills-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .skills-section h2 {
@@ -326,6 +369,7 @@ body {
   font-weight: 700;
   opacity: 0;
   animation: fadeIn 1s forwards;
+  color: var(--secondary-color);
 }
 
 .skills-grid {
@@ -344,11 +388,13 @@ body {
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   max-width: 180px;
   opacity: 0;
-  animation: slideInUp 1s forwards; /* Staggered animation */
+  animation: slideInUp 1s forwards;
+  will-change: transform;
 }
 
 .skill-card:nth-child(odd) { animation-delay: 0.2s; }
 .skill-card:nth-child(even) { animation-delay: 0.4s; }
+.skill-card:nth-child(3n) { animation-delay: 0.6s; } /* More stagger */
 
 @keyframes slideInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -356,7 +402,7 @@ body {
 }
 
 .skill-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) rotate(1deg); /* Added subtle tilt */
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
 }
 
@@ -369,12 +415,12 @@ body {
 }
 
 .skill-card:hover .skill-icon {
-  transform: rotate(360deg); /* Spin icon on hover */
+  transform: rotate(360deg);
 }
 
 .skill-card h4 {
   font-size: 18px;
-  color: #333;
+  color: var(--secondary-color);
   font-weight: 600;
 }
 
@@ -389,6 +435,14 @@ body {
   padding: 80px 20px;
   background-color: var(--bg-light);
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.projects-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .projects-grid {
@@ -409,21 +463,24 @@ body {
   cursor: pointer;
   opacity: 0;
   animation: fadeIn 1s forwards;
+  will-change: opacity;
 }
 
 .project-card:nth-child(odd) { animation-delay: 0.3s; }
 .project-card:nth-child(even) { animation-delay: 0.6s; }
+.project-card:nth-child(3n) { animation-delay: 0.9s; }
 
 .project-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-slow), filter var(--transition-slow);
+  will-change: transform, filter;
 }
 
 .project-info {
   position: absolute;
-  bottom: -100%; /* Start from bottom for slide-up */
+  bottom: -100%;
   left: 0;
   width: 100%;
   height: 100%;
@@ -436,6 +493,7 @@ body {
   text-align: center;
   padding: 10px;
   transition: bottom var(--transition-slow);
+  will-change: bottom;
 }
 
 .project-card:hover img {
@@ -444,7 +502,7 @@ body {
 }
 
 .project-card:hover .project-info {
-  bottom: 0; /* Slide-up overlay on hover */
+  bottom: 0;
 }
 
 .project-info h3 {
@@ -459,12 +517,13 @@ body {
   text-decoration: none;
   border-radius: 4px;
   font-weight: 600;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 .project-info a:hover {
-  background: var(--primary-color);
+  background: var(--accent-color);
   color: #fff;
+  transform: scale(1.05);
 }
 
 /* Education Section Styles */
@@ -472,6 +531,14 @@ body {
   padding: 60px 20px;
   background-color: #f8f8f8;
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.education-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .education-grid {
@@ -489,10 +556,11 @@ body {
   transition: transform var(--transition-fast);
   opacity: 0;
   animation: slideInUp 1s forwards;
+  will-change: transform;
 }
 
 .education-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) rotate(1deg); /* Subtle tilt */
 }
 
 .edu-icon {
@@ -502,7 +570,7 @@ body {
 }
 
 .education-card:hover .edu-icon {
-  transform: scale(1.2); /* Scale icon on hover */
+  transform: scale(1.2);
 }
 
 /* Certifications Section Styles */
@@ -510,6 +578,14 @@ body {
   padding: 60px 20px;
   background-color: var(--bg-light);
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.certifications-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .certifications-grid {
@@ -520,13 +596,14 @@ body {
 }
 
 .cert-card {
-  background: white;
+  background: var(--bg-white);
   padding: 20px;
   border-radius: 12px;
   box-shadow: var(--shadow-soft);
   transition: transform var(--transition-fast);
   opacity: 0;
   animation: fadeIn 1s forwards;
+  will-change: transform;
 }
 
 .cert-card:hover {
@@ -540,11 +617,11 @@ body {
 }
 
 .cert-card:hover .cert-icon {
-  transform: rotate(15deg); /* Tilt icon on hover */
+  transform: rotate(15deg);
 }
 
 .cert-link {
-  color: #0077cc;
+  color: var(--primary-color);
   font-weight: bold;
   display: inline-block;
   margin-top: 10px;
@@ -552,7 +629,7 @@ body {
 }
 
 .cert-link:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
 }
 
 /* Contact Section Styles */
@@ -560,6 +637,14 @@ body {
   padding: 80px 20px;
   background: #f5f5f5;
   text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.contact-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .contact-section .container {
@@ -591,19 +676,20 @@ body {
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  box-shadow: 0 0 12px rgba(165, 164, 136, 0.5); /* Glow on focus */
+  box-shadow: 0 0 12px rgba(74, 144, 226, 0.5); /* Glow matching primary */
   border: 1px solid var(--primary-color);
 }
 
 .contact-form .btn {
   padding: 10px 20px;
   border: none;
-  background: var(--text-color);
+  background: var(--secondary-color);
   color: #fff;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
   transition: background var(--transition-fast), transform var(--transition-fast);
+  animation: pulse 2s infinite ease-in-out alternate;
 }
 
 .contact-form .btn:hover {
@@ -613,7 +699,7 @@ body {
 
 /* Footer Styles */
 .footer {
-  background-color: var(--text-color);
+  background-color: var(--secondary-color);
   color: #fff;
   padding: 50px 20px;
   text-align: center;
@@ -642,8 +728,8 @@ body {
 }
 
 .social-icons a:hover {
-  color: var(--primary-color);
-  transform: scale(1.2); /* Scale social icons on hover */
+  color: var(--accent-color);
+  transform: scale(1.2) rotate(5deg); /* Added tilt */
 }
 
 .footer .copyright {
@@ -696,7 +782,7 @@ body {
   #menu-toggle:checked + .menu-icon + .nav-links {
     display: flex;
     opacity: 1;
-    transform: translateY(0); /* Smooth slide-down for mobile menu */
+    transform: translateY(0);
   }
 
   .nav-links li {
